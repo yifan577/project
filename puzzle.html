@@ -10,7 +10,7 @@
 </head>
 <body>
     <div id="collage">
-        <h2>Image Puzzle</h2>
+        <h2>拼图游戏</h2>
         <hr />
         <div id="playPanel" style="padding:5px;display:none;">
             <h3 id="imgTitle"></h3> <hr />
@@ -18,23 +18,21 @@
                 <ul id="sortable" class="sortable"></ul>
                 <div id="actualImageBox">
                     <div id="stepBox">
-                        <div>Steps:</div><div class="stepCount">0</div>
+                        <div>步数:</div><div class="stepCount">0</div>
                     </div>
                     <div id="timeBox">
-                        Time Taken: <span id="timerPanel"></span> secs
+                        时间: <span id="timerPanel"></span> S
                     </div>
                     <img id="actualImage" />
-                    <div>Re-arrange to create a picture like this.</div>
+                    <div>原图长这样</div>
                     <p id="levelPanel">
-                        <input type="radio" name="level" id="easy" checked="checked" value="3" /> <label for="easy">Easy</label>
-                        <input type="radio" name="level" id="medium" value="4" /> <label for="medium">Medium</label>
-                        <input type="radio" name="level" id="hard" value="5" /> <label for="hard">Hard</label>
+                        <input type="radio" name="level" id="Easy" checked="checked" value="3" /> <label for="easy">简单</label>
+                        <input type="radio" name="level" id="Medium" value="4" /> <label for="medium">中等</label>
+                        <input type="radio" name="level" id="Hard" value="5" /> <label for="hard">困难</label>
                     </p>
                     <div>
-                        <button id="btnRule" type="button" class="btn" onclick="rules();">Rules</button>
-                        <button id="newPhoto" type="button" class="btn">Another Photo</button>
-                        <button id="btnReplay" type="button" class="btn" onclick="about();">About</button>
-                    </div>
+                        <button id="newPhoto" type="button" class="btn">另一张</button>
+                   </div>
                 </div>
             </div>
         </div>
@@ -45,20 +43,20 @@
                 <br />
                 Steps: <span class="stepCount">0</span> steps.
                 <br />
-                Time Taken: <span class="timeCount">0</span> seconds<br />
+               Time Taken: <span class="timeCount">0</span> seconds<br />
                 <div>
-                    <button type="button" onclick="window.location.reload(true);">Play Again</button>
+                    <button type="button" onclick="window.location.reload(true);">再来一次</button>
                 </div>
             </div>
         </div>
 
         <script>
             var images = [
-                { src: 'images/london-bridge.jpg', title: 'London Bridge' },
-                { src: 'images/lotus-temple.jpg', title: 'Lotus Temple' },
-                { src: 'images/qutub-minar.jpg', title: 'Qutub Minar' },
-                { src: 'images/statue-of-liberty.jpg', title: 'Statue Of Liberty' },
-                { src: 'images/taj-mahal.jpg', title: 'Taj Mahal' }
+                { src: 'images/london-bridge.jpg', title: '伦敦桥' },
+                { src: 'images/lotus-temple.jpg', title: '莲花寺' },
+                { src: 'images/qutub-minar.jpg', title: '顧特卜塔' },
+                { src: 'images/statue-of-liberty.jpg', title: '自由女神像' },
+                { src: 'images/taj-mahal.jpg', title: '泰姬瑪哈陵' }
             ];
 
             $(function () {
