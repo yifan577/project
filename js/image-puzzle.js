@@ -3,6 +3,31 @@
 var imagePuzzle = {
     stepCount: 0,
     startTime: new Date().getTime(),
+    // 最佳记录
+    loadBestRecord: function (difficulty) {
+        var raw = localStorage.getItem('puzzle_best_' + difficulty);
+        return raw ? JSON.parse(raw) : null;
+    },
+    saveBestRecord: function (difficulty, steps, seconds) {
+        var current = this.loadBestRecord(difficulty);
+        if (!current || steps < current.steps || (steps === current.steps && seconds < current.seconds)) {
+            localStorage.setItem('puzzle_best_' + difficulty, JSON.stringify({ steps: steps, seconds: seconds }));
+            return true;
+        }
+        return false;
+    },
+    renderBestRecords: function () {
+        var levels = { '3': '简单', '4': '中等', '5': '困难' };
+        var html = '';
+        for (var lv in levels) {
+            var rec = imagePuzzle.loadBestRecord(lv);
+            html += '<div class="best-row"><b>' + levels[lv] + '</b> — ';
+            html += rec ? rec.steps + '步 / ' + rec.seconds + '秒' : '暂无记录';
+            html += '</div>';
+        }
+        $('#bestPanel').html(html);
+    },
+
     startGame: function (images, gridSize) {
         this.setImage(images, gridSize);
         $('#playPanel').show();
@@ -11,6 +36,7 @@ var imagePuzzle = {
         this.stepCount = 0;
         this.startTime = new Date().getTime();
         this.tick();
+        this.renderBestRecords();
     },
     tick: function () {
         var now = new Date().getTime();
@@ -31,8 +57,16 @@ var imagePuzzle = {
                 $(this).replaceAll(ui.draggable);
 
                 currentList = $('#sortable > li').map(function (i, el) { return $(el).attr('data-value'); });
-                if (isSorted(currentList))
+                if (isSorted(currentList)) {
+                    var nowDone = new Date().getTime();
+                    var elapsed = parseInt((nowDone - imagePuzzle.startTime) / 1000, 10);
+                    $('.timeCount').text(elapsed);
+                    // 记录最佳成绩
+                    var gridSize = $('#levelPanel :radio:checked').val();
+                    imagePuzzle.saveBestRecord(gridSize, imagePuzzle.stepCount + 1, elapsed);
+                    imagePuzzle.renderBestRecords();
                     $('#actualImageBox').empty().html($('#gameOver').html());
+                }
                 else {
                     var now = new Date().getTime();
                     imagePuzzle.stepCount++;
