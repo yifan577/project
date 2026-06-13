@@ -36,6 +36,8 @@
                     </div>
                     <div>
                         <button id="newPhoto" type="button" class="btn">另一张</button>
+                        <input type="file" id="localPhotoInput" accept="image/*" />
+                        <button id="localPhotoBtn" type="button" class="btn">本地照片</button>
                    </div>
                 </div>
             </div>
@@ -74,6 +76,16 @@
                 $('#levelPanel :radio').change(function (e) {
                     var gridSize = $(this).val();
                     imagePuzzle.startGame(images, gridSize);
+                });
+                $('#localPhotoBtn').click(function () {
+                    $('#localPhotoInput').click();
+                });
+                $('#localPhotoInput').change(function (e) {
+                    if (e.target.files && e.target.files[0]) {
+                        var gridSize = $('#levelPanel :radio:checked').val();
+                        imagePuzzle.loadLocalImage(e.target.files[0], gridSize);
+                        this.value = '';
+                    }
                 });
             });
             function rules() {

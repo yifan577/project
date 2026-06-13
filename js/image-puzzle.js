@@ -28,8 +28,32 @@ var imagePuzzle = {
         $('#bestPanel').html(html);
     },
 
-    startGame: function (images, gridSize) {
-        this.setImage(images, gridSize);
+    loadLocalImage: function (file, gridSize) {
+        var reader = new FileReader();
+        var self = this;
+        reader.onload = function (e) {
+            var img = new Image();
+            img.onload = function () {
+                var size = Math.min(img.width, img.height);
+                var x = (img.width - size) / 2;
+                var y = (img.height - size) / 2;
+                var canvas = document.createElement('canvas');
+                canvas.width = size;
+                canvas.height = size;
+                var ctx = canvas.getContext('2d');
+                ctx.drawImage(img, x, y, size, size, 0, 0, size, size);
+                var dataUrl = canvas.toDataURL('image/jpeg', 0.92);
+                var customImage = { src: dataUrl, title: '本地照片' };
+                var gs = $('#levelPanel :radio:checked').val();
+                self.startGame(null, gs, customImage);
+            };
+            img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    },
+
+    startGame: function (images, gridSize, customImage) {
+        this.setImage(images, gridSize, customImage);
         $('#playPanel').show();
         $('#sortable').randomize();
         this.enableSwapping('#sortable li');
@@ -80,12 +104,17 @@ var imagePuzzle = {
         });
     },
 
-    setImage: function (images, gridSize) {
+    setImage: function (images, gridSize, customImage) {
         console.log(gridSize);
         gridSize = gridSize || 4; // If gridSize is null or not passed, default it as 4.
         console.log(gridSize);
         var percentage = 100 / (gridSize - 1);
-        var image = images[Math.floor(Math.random() * images.length)];
+        var image;
+        if (customImage) {
+            image = customImage;
+        } else {
+            image = images[Math.floor(Math.random() * images.length)];
+        }
         $('#imgTitle').html(image.title);
         $('#actualImage').attr('src', image.src);
         $('#sortable').empty();
