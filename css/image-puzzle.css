@@ -68,3 +68,41 @@
     width: auto;
     padding: 3px 8px;
 }
+
+/* 左侧拼图列：包含拼图盘和左下角的控制按钮 */
+#collage #puzzleColumn {
+    display: inline-block;
+    vertical-align: top;
+}
+
+#collage #puzzleColumn #sortable {
+    margin-bottom: 6px;
+}
+
+#collage #gameControls {
+    width: 400px;
+    margin: 0 10px 10px 10px;
+    text-align: left;
+}
+
+#collage #gameControls button {
+    background-color: #ffffff;
+    border: 1px solid #a46;
+    color: #a46;
+    padding: 6px 14px;
+    margin-right: 8px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+#collage #gameControls button:hover:not(:disabled) {
+    background-color: #a46;
+    color: #ffffff;
+}
+
+#collage #gameControls button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
