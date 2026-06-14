@@ -3,6 +3,7 @@
 var imagePuzzle = {
     stepCount: 0,
     startTime: new Date().getTime(),
+    history: [],
     // 最佳记录
     loadBestRecord: function (difficulty) {
         var raw = localStorage.getItem('puzzle_best_' + difficulty);
@@ -10,7 +11,7 @@ var imagePuzzle = {
     },
     saveBestRecord: function (difficulty, steps, seconds) {
         var current = this.loadBestRecord(difficulty);
-        if (!current || seconds < current.seconds) {
+        if (!current || seconds < current.seconds || (seconds === current.seconds && steps < current.steps)) {
             localStorage.setItem('puzzle_best_' + difficulty, JSON.stringify({ steps: steps, seconds: seconds }));
             return true;
         }
@@ -52,8 +53,30 @@ var imagePuzzle = {
         reader.readAsDataURL(file);
     },
 
+    undo: function () {
+        if (this.history.length === 0) return;
+        var prevOrder = this.history.pop();
+        var $lis = $('#sortable > li');
+        var $sorted = prevOrder.map(function (val) {
+            return $lis.filter('[data-value="' + val + '"]')[0];
+        });
+        $('#sortable').append($sorted);
+        this.stepCount = Math.max(0, this.stepCount - 1);
+        $('.stepCount').text(this.stepCount);
+        this.enableSwapping('#sortable li');
+    },
+
+    reset: function () {
+        this.history = [];
+        $('#sortable').randomize();
+        this.stepCount = 0;
+        $('.stepCount').text(this.stepCount);
+        this.enableSwapping('#sortable li');
+    },
+
     startGame: function (images, gridSize, customImage) {
         this.setImage(images, gridSize, customImage);
+        this.history = [];
         $('#playPanel').show();
         $('#sortable').randomize();
         this.enableSwapping('#sortable li');
@@ -77,6 +100,9 @@ var imagePuzzle = {
         });
         $(elem).droppable({
             drop: function (event, ui) {
+                var beforeOrder = $('#sortable > li').map(function (i, el) { return $(el).attr('data-value'); }).get();
+                imagePuzzle.history.push(beforeOrder);
+
                 var $dragElem = $(ui.draggable).clone().replaceAll(this);
                 $(this).replaceAll(ui.draggable);
 

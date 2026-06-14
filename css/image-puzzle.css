@@ -72,3 +72,59 @@
     width: auto;
     padding: 3px 8px;
 }
+
+/* 黑夜模式切换按钮 - 右上角 */
+#collage #darkModeToggle {
+    float: right;
+    margin: 5px 10px 0 0;
+    cursor: pointer;
+}
+
+/* 黑夜模式样式 */
+body.dark-mode {
+    background-color: #1a1a2e;
+}
+body.dark-mode #collage {
+    background-color: #1a1a2e;
+}
+body.dark-mode #collage h2,
+body.dark-mode #collage #imgTitle {
+    color: #e0e0e0;
+}
+body.dark-mode #collage #playPanel {
+    background-color: #16213e;
+}
+body.dark-mode #collage hr {
+    border-top-color: #333;
+}
+body.dark-mode #collage #stepBox div {
+    background-color: #16213e;
+    color: #e0e0e0;
+}
+body.dark-mode #collage #timeBox {
+    color: #e0e0e0;
+}
+body.dark-mode #collage button {
+    background-color: #0f3460;
+    border-color: #533483;
+    color: #e0e0e0;
+}
+body.dark-mode #collage img#actualImage {
+    border-color: #533483;
+}
+body.dark-mode #collage #sortable {
+    border-color: #533483;
+}
+body.dark-mode #collage #actualImageBox div {
+    color: #e0e0e0;
+}
+body.dark-mode #collage #levelPanel label {
+    color: #e0e0e0;
+}
+body.dark-mode #collage div[style*="background:#fff"] {
+    background-color: #16213e !important;
+    color: #e0e0e0;
+}
+body.dark-mode #collage .best-row {
+    color: #e0e0e0;
+}

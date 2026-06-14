@@ -10,6 +10,7 @@
 </head>
 <body>
     <div id="collage">
+        <button id="darkModeToggle"> 黑夜模式</button>
         <h2>拼图游戏</h2>
         <hr />
         <div id="playPanel" style="padding:5px;display:none;">
@@ -35,6 +36,8 @@
                         <div id="bestPanel" style="margin-top:4px;line-height:1.6;"></div>
                     </div>
                     <div>
+                        <button id="resetBtn" type="button" class="btn">重置</button>
+                        <button id="undoBtn" type="button" class="btn">撤回</button>
                         <button id="newPhoto" type="button" class="btn">另一张</button>
                         <input type="file" id="localPhotoInput" accept="image/*" />
                         <button id="localPhotoBtn" type="button" class="btn">本地照片</button>
@@ -68,8 +71,21 @@
             $(function () {
                 var gridSize = $('#levelPanel :radio:checked').val();
                 imagePuzzle.startGame(images, gridSize);
+
+                // 黑夜模式
+                if (localStorage.getItem('puzzle_dark_mode') === '1') {
+                    $('body').addClass('dark-mode');
+                    $('#darkModeToggle').text(' 白天模式');
+                }
+                $('#darkModeToggle').click(function () {
+                    $('body').toggleClass('dark-mode');
+                    var isDark = $('body').hasClass('dark-mode');
+                    $(this).text(isDark ? ' 白天模式' : ' 黑夜模式');
+                    localStorage.setItem('puzzle_dark_mode', isDark ? '1' : '0');
+                });
+
                 $('#newPhoto').click(function () {
-                    var gridSize = $('#levelPanel :radio:checked').val();  // Take the updated gridSize from UI.
+                    var gridSize = $('#levelPanel :radio:checked').val();
                     imagePuzzle.startGame(images, gridSize);
                 });
 
@@ -86,6 +102,12 @@
                         imagePuzzle.loadLocalImage(e.target.files[0], gridSize);
                         this.value = '';
                     }
+                });
+                $('#resetBtn').click(function () {
+                    imagePuzzle.reset();
+                });
+                $('#undoBtn').click(function () {
+                    imagePuzzle.undo();
                 });
             });
             function rules() {
