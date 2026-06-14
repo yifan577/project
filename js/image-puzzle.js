@@ -10,7 +10,7 @@ var imagePuzzle = {
     },
     saveBestRecord: function (difficulty, steps, seconds) {
         var current = this.loadBestRecord(difficulty);
-        if (!current || steps < current.steps || (steps === current.steps && seconds < current.seconds)) {
+        if (!current || seconds < current.seconds) {
             localStorage.setItem('puzzle_best_' + difficulty, JSON.stringify({ steps: steps, seconds: seconds }));
             return true;
         }
