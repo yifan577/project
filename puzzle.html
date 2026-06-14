@@ -16,7 +16,13 @@
         <div id="playPanel" style="padding:5px;display:none;">
             <h3 id="imgTitle"></h3> <hr />
             <div style="display:inline-block; margin:auto; width:95%; vertical-align:top;">
-                <ul id="sortable" class="sortable"></ul>
+                <div id="puzzleColumn">
+                    <ul id="sortable" class="sortable"></ul>
+                    <div id="gameControls">
+                        <button id="undoBtn" type="button" title="撤销上一步" disabled>↶ 撤销</button>
+                        <button id="resetBtn" type="button" title="重置当前局" disabled>↻ 重置</button>
+                    </div>
+                </div>
                 <div id="actualImageBox">
                     <div id="stepBox">
                         <div>步数:</div><div class="stepCount">0</div>
@@ -37,18 +43,20 @@
                     </div>
                     <div>
                         <button id="newPhoto" type="button" class="btn">另一张</button>
+                        <input type="file" id="localPhotoInput" accept="image/*" />
+                        <button id="localPhotoBtn" type="button" class="btn">本地照片</button>
                    </div>
                 </div>
             </div>
         </div>
         <div id="gameOver" style="display:none;">
             <div style="background-color: #fc9e9e; padding: 5px 10px 20px 10px; text-align: center; ">
-                <h2 style="text-align:center">Game Over!!</h2>
-                Congratulations!! <br /> You have completed this picture.
+                <h2 style="text-align:center">游戏结束!!</h2>
+                恭喜!! <br />你完成了这张图片.
                 <br />
-                Steps: <span class="stepCount">0</span> steps.
+                步数: <span class="stepCount">0</span>步.
                 <br />
-               Time Taken: <span class="timeCount">0</span> seconds<br />
+               时间: <span class="timeCount">0</span> S<br />
                 <div>
                     <button type="button" onclick="window.location.reload(true);">再来一次</button>
                 </div>
@@ -88,6 +96,23 @@
                 $('#levelPanel :radio').change(function (e) {
                     var gridSize = $(this).val();
                     imagePuzzle.startGame(images, gridSize);
+                });
+
+                $('#undoBtn').click(function () {
+                    imagePuzzle.undoMove();
+                });
+
+                $('#resetBtn').click(function () {
+                    imagePuzzle.resetGame();
+                $('#localPhotoBtn').click(function () {
+                    $('#localPhotoInput').click();
+                });
+                $('#localPhotoInput').change(function (e) {
+                    if (e.target.files && e.target.files[0]) {
+                        var gridSize = $('#levelPanel :radio:checked').val();
+                        imagePuzzle.loadLocalImage(e.target.files[0], gridSize);
+                        this.value = '';
+                    }
                 });
             });
             function rules() {
