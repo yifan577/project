@@ -59,6 +59,10 @@
         height: 100px;
     }
 
+#collage #localPhotoInput {
+    display: none;
+}
+
 #collage button  {
     background-color:#f5f2f2;
     border:1px solid #cce;
