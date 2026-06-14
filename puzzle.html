@@ -10,6 +10,7 @@
 </head>
 <body>
     <div id="collage">
+        <button id="darkModeToggle"> 黑夜模式</button>
         <h2>拼图游戏</h2>
         <hr />
         <div id="playPanel" style="padding:5px;display:none;">
@@ -66,6 +67,19 @@
             $(function () {
                 var gridSize = $('#levelPanel :radio:checked').val();
                 imagePuzzle.startGame(images, gridSize);
+
+                // 黑夜模式
+                if (localStorage.getItem('puzzle_dark_mode') === '1') {
+                    $('body').addClass('dark-mode');
+                    $('#darkModeToggle').text(' 白天模式');
+                }
+                $('#darkModeToggle').click(function () {
+                    $('body').toggleClass('dark-mode');
+                    var isDark = $('body').hasClass('dark-mode');
+                    $(this).text(isDark ? ' 白天模式' : ' 黑夜模式');
+                    localStorage.setItem('puzzle_dark_mode', isDark ? '1' : '0');
+                });
+
                 $('#newPhoto').click(function () {
                     var gridSize = $('#levelPanel :radio:checked').val();  // Take the updated gridSize from UI.
                     imagePuzzle.startGame(images, gridSize);
